@@ -14,7 +14,6 @@ public class Client {
             StudentClient client = new StudentClientImpl();
             ProfessorServer stub = (ProfessorServer) registry.lookup("exam");
             stub.registerStudent(client, "1");
-            System.out.println("Client registered, waiting for notification");
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString()); e.printStackTrace();
         }

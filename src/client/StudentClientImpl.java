@@ -34,6 +34,7 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public void registerExpired(String message) {
-        throw new UnsupportedOperationException();
+        System.out.println(message);
+        System.exit(0);
     }
 }
