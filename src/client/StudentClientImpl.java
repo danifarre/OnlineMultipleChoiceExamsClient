@@ -1,25 +1,37 @@
 package client;
 
+import common.ProfessorServer;
 import common.StudentClient;
 import exam.Question;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 
 public class StudentClientImpl extends UnicastRemoteObject implements StudentClient {
 
-    public StudentClientImpl() throws RemoteException {
+    private Scanner scanner;
+    private ProfessorServer server;
+    private String studentId;
+
+    public StudentClientImpl(String studentId, ProfessorServer server) throws RemoteException {
         super();
+        this.server = server;
+        this.studentId = studentId;
+        this.scanner = new Scanner(System.in);
     }
 
     @Override
     public void startExam(String message) {
-        throw new UnsupportedOperationException();
+        System.out.println(message);
     }
 
     @Override
-    public void sendQuestion(Question question) {
-        throw new UnsupportedOperationException();
+    public void sendQuestion(Question question) throws RemoteException {
+        System.out.println(question);
+        System.out.print("Your answer: ");
+        question.answer(this.scanner.nextInt());
+        this.server.sendAnswer(this.studentId, question);
     }
 
     @Override
@@ -29,7 +41,8 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public void examFinished(int grade, String message) {
-        throw new UnsupportedOperationException();
+        System.out.println(message + " Grade: " + grade);
+        System.exit(0);
     }
 
     @Override

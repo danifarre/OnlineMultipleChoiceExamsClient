@@ -15,8 +15,6 @@ public class Question implements Serializable {
         this.questionNumber = questionNumber;
         this.statement = statement;
         this.choices = choices;
-
-        this.choices = new ArrayList<>();
         this.answer = 0;
     }
 
@@ -28,13 +26,18 @@ public class Question implements Serializable {
         return this.answer;
     }
 
+    public Integer getQuestionNumber() {
+        return this.questionNumber;
+    }
+
     @Override
     public String toString() {
-        return "Question{" +
-                "questionNumber=" + questionNumber +
-                ", statement='" + statement + '\'' +
-                ", choices=" + choices +
-                ", answer=" + answer +
-                '}';
+
+        StringBuilder output = new StringBuilder("\n" + this.questionNumber +
+                ". " + this.statement + "\n");
+        for (int i = 0; i < this.choices.size(); i++) {
+            output.append("    ").append(i + 1).append(") ").append(this.choices.get(i)).append("\n");
+        }
+        return output.toString();
     }
 }
