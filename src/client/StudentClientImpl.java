@@ -29,8 +29,15 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     @Override
     public void sendQuestion(Question question) throws RemoteException {
         System.out.println(question);
-        System.out.print("Your answer: ");
-        question.answer(this.scanner.nextInt());
+        Integer answer;
+        do {
+            System.out.print("Your answer: ");
+            answer = this.scanner.nextInt();
+            if (!question.validQuestion(answer)) {
+                System.out.println("This answer is not valid");
+            }
+        } while (!question.validQuestion(answer));
+        question.answer(answer);
         this.server.sendAnswer(this.studentId, question);
     }
 
@@ -42,12 +49,10 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     @Override
     public void examFinished(int grade, String message) {
         System.out.println(message + " Grade: " + grade);
-        System.exit(0);
     }
 
     @Override
     public void registerExpired(String message) {
         System.out.println(message);
-        System.exit(0);
     }
 }
