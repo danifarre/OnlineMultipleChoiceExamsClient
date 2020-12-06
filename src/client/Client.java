@@ -1,6 +1,7 @@
 package client;
 
 import common.*;
+import exam.Question;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -10,6 +11,8 @@ import java.util.Scanner;
 public class Client {
 
     private Scanner scanner;
+    private StudentClientImpl client;
+    private ProfessorServer server;
 
     public static void main(String[] args) {
         new Client().run(args);
@@ -24,10 +27,22 @@ public class Client {
             System.out.println("Enter your student id:");
             String studentId = this.scanner.nextLine();
 
-            ProfessorServer server = (ProfessorServer) registry.lookup("exam");
-            StudentClient client = new StudentClientImpl(studentId, server);
+            this.server = (ProfessorServer) registry.lookup("exam");
+            this.client = new StudentClientImpl(studentId, this.server);
 
-            server.registerStudent(client, studentId);
+            this.server.registerStudent(client, studentId);
+
+            synchronized (this.client) {
+                this.client.wait();
+                while (true) {
+                    this.client.wait();
+                    if (this.client.examInProgress()) {
+                        Question question = this.client.getAnswer();
+                        this.server.sendAnswer(studentId, question);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString()); e.printStackTrace();
         }

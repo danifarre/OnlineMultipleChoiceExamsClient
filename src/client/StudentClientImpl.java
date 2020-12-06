@@ -11,34 +11,36 @@ import java.util.Scanner;
 public class StudentClientImpl extends UnicastRemoteObject implements StudentClient {
 
     private Scanner scanner;
-    private ProfessorServer server;
     private String studentId;
+    private boolean examInProgress;
+    private Question question;
 
     public StudentClientImpl(String studentId, ProfessorServer server) throws RemoteException {
         super();
-        this.server = server;
         this.studentId = studentId;
         this.scanner = new Scanner(System.in);
+        this.examInProgress = true;
+    }
+
+    public boolean examInProgress() {
+        return this.examInProgress;
     }
 
     @Override
     public void startExam(String message) {
         System.out.println(message);
+        synchronized (this) {
+            notify();
+        }
     }
 
     @Override
     public void sendQuestion(Question question) throws RemoteException {
         System.out.println(question);
-        Integer answer;
-        do {
-            System.out.print("Your answer: ");
-            answer = this.scanner.nextInt();
-            if (!question.validQuestion(answer)) {
-                System.out.println("This answer is not valid");
-            }
-        } while (!question.validQuestion(answer));
-        question.answer(answer);
-        this.server.sendAnswer(this.studentId, question);
+        synchronized (this) {
+            this.question = question;
+            notify();
+        }
     }
 
     @Override
@@ -48,11 +50,27 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public void examFinished(int grade, String message) {
-        System.out.println(message + " Grade: " + grade);
+        synchronized (this) {
+            this.examInProgress = false;
+            System.out.println(message + " Grade: " + grade);
+        }
     }
 
     @Override
     public void registerExpired(String message) {
         System.out.println(message);
+    }
+
+    public Question getAnswer() {
+        Integer answer;
+        do {
+            System.out.print("Your answer: ");
+            answer = this.scanner.nextInt();
+            if (!this.question.validQuestion(answer)) {
+                System.out.println("This answer is not valid");
+            }
+        } while (!this.question.validQuestion(answer));
+        this.question.answer(answer);
+        return this.question;
     }
 }
