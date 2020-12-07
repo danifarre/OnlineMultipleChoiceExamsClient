@@ -36,15 +36,17 @@ public class Client {
                 this.client.wait();
                 while (true) {
                     this.client.wait();
-                    if (this.client.examInProgress()) {
-                        Question question = this.client.getAnswer();
-                        this.server.sendAnswer(studentId, question);
+                    if (!this.client.examInProgress()) {
+                        break;
                     }
+                    System.out.println("ok");
+                    Question question = this.client.getAnswer();
+                    this.server.sendAnswer(studentId, question);
                 }
             }
-
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString()); e.printStackTrace();
         }
+        System.exit(0);
     }
 }

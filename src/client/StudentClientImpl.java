@@ -53,6 +53,7 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
         synchronized (this) {
             this.examInProgress = false;
             System.out.println(message + " Grade: " + grade);
+            notify();
         }
     }
 
