@@ -3,6 +3,7 @@ package client;
 import common.*;
 import exam.Question;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Objects;
@@ -39,7 +40,6 @@ public class Client {
                     if (!this.client.examInProgress()) {
                         break;
                     }
-                    System.out.println("ok");
                     Question question = this.client.getAnswer();
                     this.server.sendAnswer(studentId, question);
                 }

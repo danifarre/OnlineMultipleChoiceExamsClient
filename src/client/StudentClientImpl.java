@@ -50,11 +50,8 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public void examFinished(int grade, String message) {
-        synchronized (this) {
-            this.examInProgress = false;
-            System.out.println(message + " Grade: " + grade);
-            notify();
-        }
+        this.examInProgress = false;
+        System.out.println("\n" + message + " Grade: " + grade);
     }
 
     @Override
