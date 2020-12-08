@@ -39,7 +39,6 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     public void examFinished(int grade, String message) {
         this.examInProgress = false;
         ClientMessages.examFinished(grade, message);
-        System.exit(0);
     }
 
     @Override
@@ -58,5 +57,11 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
         } while (!this.question.validQuestion(answer));
         this.question.answer(answer);
         return this.question;
+    }
+
+    @Override
+    public synchronized void reconnectStudent() throws RemoteException {
+        ClientMessages.studentReconnected();
+        notify();
     }
 }

@@ -33,4 +33,8 @@ public class ClientMessages {
         System.out.println("\n" + message);
         System.out.println("Your grade: " + grade);
     }
+
+    public static void studentReconnected() {
+        System.out.println("You has reconnected correctly");
+    }
 }
