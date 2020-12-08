@@ -22,25 +22,17 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
         this.examInProgress = true;
     }
 
-    public boolean examInProgress() {
-        return this.examInProgress;
-    }
-
     @Override
-    public void startExam(String message) {
+    public synchronized void startExam(String message) {
         System.out.println(message);
-        synchronized (this) {
-            notify();
-        }
+        notify();
     }
 
     @Override
-    public void sendQuestion(Question question) throws RemoteException {
+    public synchronized void sendQuestion(Question question) throws RemoteException {
         System.out.println(question);
-        synchronized (this) {
-            this.question = question;
-            notify();
-        }
+        this.question = question;
+        notify();
     }
 
     @Override
@@ -52,6 +44,7 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     public void examFinished(int grade, String message) {
         this.examInProgress = false;
         System.out.println("\n" + message + " Grade: " + grade);
+        System.exit(0);
     }
 
     @Override

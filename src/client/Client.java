@@ -4,6 +4,7 @@ import common.*;
 import exam.Question;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
+import java.awt.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Objects;
@@ -17,9 +18,10 @@ public class Client {
 
     public static void main(String[] args) {
         new Client().run(args);
+        System.exit(0);
     }
 
-    public  void run(String[] args) {
+    public void run(String[] args) {
         this.scanner = new Scanner(System.in);
         String host = (args.length < 1) ? null : args[0];
         try {
@@ -37,9 +39,6 @@ public class Client {
                 this.client.wait();
                 while (true) {
                     this.client.wait();
-                    if (!this.client.examInProgress()) {
-                        break;
-                    }
                     Question question = this.client.getAnswer();
                     this.server.sendAnswer(studentId, question);
                 }
@@ -47,6 +46,5 @@ public class Client {
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString()); e.printStackTrace();
         }
-        System.exit(0);
     }
 }
