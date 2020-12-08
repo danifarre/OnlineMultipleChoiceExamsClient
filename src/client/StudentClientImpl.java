@@ -36,11 +36,6 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     }
 
     @Override
-    public void sendPreviousQuestion(Question question) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void examFinished(int grade, String message) {
         this.examInProgress = false;
         ClientMessages.examFinished(grade, message);
