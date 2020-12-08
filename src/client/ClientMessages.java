@@ -13,23 +13,24 @@ public class ClientMessages {
     }
 
     public static void enterId() {
-        String enterId = "Enter your student id: ";
-        System.out.print(enterId);
+        System.out.print("Enter your student id: ");
+    }
+
+    public static void waitingExam() {
+        System.out.println("Waiting for the exam to start.");
     }
 
     public static void yourAnswer() {
-        String answer = "Your answer: ";
-        System.out.print(answer);
+        System.out.print("Your answer: ");
     }
 
     public static void answerNotValid() {
         String notValidAnswer = "This answer is not valid.";
-        System.out.println(notValidAnswer);
+        System.out.println("This answer is not valid.");
     }
 
     public static void examFinished(int grade,String message) {
         System.out.println("\n" + message);
-        String yourGrade = "Your grade: ";
-        System.out.println(yourGrade + grade);
+        System.out.println("Your grade: " + grade);
     }
 }

@@ -30,6 +30,8 @@ public class Client {
             ClientMessages.enterId();
             String studentId = this.scanner.nextLine();
 
+            ClientMessages.waitingExam();
+
             this.server = (ProfessorServer) registry.lookup("exam");
             this.client = new StudentClientImpl(studentId, this.server);
 
