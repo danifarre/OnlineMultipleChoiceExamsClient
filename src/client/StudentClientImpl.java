@@ -24,13 +24,13 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public synchronized void startExam(String message) {
-        System.out.println(message);
+        ClientMessages.sendMessage(message);
         notify();
     }
 
     @Override
     public synchronized void sendQuestion(Question question) throws RemoteException {
-        System.out.println(question);
+        ClientMessages.sendQuestion(question);
         this.question = question;
         notify();
     }
@@ -43,22 +43,22 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
     @Override
     public void examFinished(int grade, String message) {
         this.examInProgress = false;
-        System.out.println("\n" + message + " Grade: " + grade);
+        ClientMessages.examFinished(grade, message);
         System.exit(0);
     }
 
     @Override
     public void registerExpired(String message) {
-        System.out.println(message);
+        ClientMessages.sendMessage(message);
     }
 
     public Question getAnswer() {
         Integer answer;
         do {
-            System.out.print("Your answer: ");
+            ClientMessages.yourAnswer();
             answer = this.scanner.nextInt();
             if (!this.question.validQuestion(answer)) {
-                System.out.println("This answer is not valid");
+                ClientMessages.answerNotValid();
             }
         } while (!this.question.validQuestion(answer));
         this.question.answer(answer);

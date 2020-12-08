@@ -27,7 +27,7 @@ public class Client {
         try {
             Registry registry = LocateRegistry.getRegistry(host);
 
-            System.out.println("Enter your student id:");
+            ClientMessages.enterId();
             String studentId = this.scanner.nextLine();
 
             this.server = (ProfessorServer) registry.lookup("exam");
