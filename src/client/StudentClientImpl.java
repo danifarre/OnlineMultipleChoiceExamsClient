@@ -12,14 +12,12 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     private Scanner scanner;
     private String studentId;
-    private boolean examInProgress;
     private Question question;
 
     public StudentClientImpl(String studentId, ProfessorServer server) throws RemoteException {
         super();
         this.studentId = studentId;
         this.scanner = new Scanner(System.in);
-        this.examInProgress = true;
     }
 
     @Override
@@ -37,7 +35,6 @@ public class StudentClientImpl extends UnicastRemoteObject implements StudentCli
 
     @Override
     public void examFinished(int grade, String message) {
-        this.examInProgress = false;
         ClientMessages.examFinished(grade, message);
     }
 

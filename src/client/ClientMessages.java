@@ -37,4 +37,8 @@ public class ClientMessages {
     public static void studentReconnected() {
         System.out.println("You has reconnected correctly");
     }
+
+    public static void serverNotAvailable() {
+        System.out.println("The server is not available");
+    }
 }
